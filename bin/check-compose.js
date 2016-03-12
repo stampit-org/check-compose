@@ -7,17 +7,17 @@
     return;
   }
 
-  composeImplementationFile = path.join(process.cwd(), composeImplementationFile);
   var imported;
   try {
-    require('babel-register')(require('babel-preset-es2015'));
-    require('babel-polyfill');
-
     imported = require(composeImplementationFile);
-  } catch (err) {
-    console.error('Failed to read JavaScript file ' + composeImplementationFile);
-    console.error(err);
-    return;
+  } catch (err1) {
+    try {
+      composeImplementationFile = path.join(process.cwd(), composeImplementationFile);
+      imported = require(composeImplementationFile);
+    } catch (err2) {
+      console.error(err2 + '\nFailed to read JavaScript file ' + composeImplementationFile);
+      return;
+    }
   }
 
   var compose = typeof imported === 'function' ? imported :
@@ -30,5 +30,5 @@
   }
 
   global.compose = compose;
-  require('../src');
+  require('../build');
 }());

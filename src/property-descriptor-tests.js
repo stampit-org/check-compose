@@ -8,7 +8,7 @@ const createDescriptors = () => {
     configurable: false,
     enumerable: false
   };
-  const b = Object.assign({}, a);
+  const b = _.assign({}, a);
   const descriptors = {
     a,
     b
@@ -22,11 +22,11 @@ test('stamp', nest => {
     const b = descriptors.b;
 
     const obj = compose({
-      propertyDescriptors: Object.assign({}, descriptors)
+      propertyDescriptors: _.assign({}, descriptors)
     })();
 
     const actual = Object.getOwnPropertyDescriptor(obj, 'b');
-    const expected = Object.assign({}, b);
+    const expected = _.assign({}, b);
 
     assert.deepEqual(actual, expected,
       'should assign propertyDescriptors to instances');
@@ -72,7 +72,7 @@ test('stamp', nest => {
         }
       },
       {
-        propertyDescriptors: Object.assign({}, descriptors)
+        propertyDescriptors: _.assign({}, descriptors)
       })();
 
     const actual = obj.a;
@@ -89,11 +89,11 @@ test('stamp', nest => {
     const b = descriptors.b;
 
     const stamp = compose({
-      staticPropertyDescriptors: Object.assign({}, descriptors)
+      staticPropertyDescriptors: _.assign({}, descriptors)
     });
 
     const actual = Object.getOwnPropertyDescriptor(stamp, 'b');
-    const expected = Object.assign({}, b);
+    const expected = _.assign({}, b);
 
     assert.deepEqual(actual, expected,
       'should assign staticProperties to stamp');

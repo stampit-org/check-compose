@@ -1,7 +1,8 @@
 import test from 'tape';
+import _ from 'lodash';
 
 const buildDescriptor = (obj) => {
-  return Object.assign({}, {
+  return _.assign({}, {
     properties: {
       a: 'props',
       b: 'props'

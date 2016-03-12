@@ -1,4 +1,5 @@
 import test from 'tape';
+import _ from 'lodash';
 
 const build = (num) => {
 
@@ -17,18 +18,18 @@ const buildInitializers = () => {
   composable.compose = function () {};
   composable.compose.initializers = [
     (options, { instance }) => {
-      return Object.assign(instance, {
+      return _.assign(instance, {
         a: 'a',
         override: 'a'
       });
     },
     (options, { instance }) => {
-      return Object.assign(instance, {
+      return _.assign(instance, {
         b: 'b'
       });
     },
     (options, { instance }) => {
-      return Object.assign(instance, {
+      return _.assign(instance, {
         override: 'c'
       });
     }
@@ -165,7 +166,7 @@ test('stamp()', nest => {
     composable.compose = function () {};
     composable.compose.initializers = [
       function () {
-        return Object.assign(this, {
+        return _.assign(this, {
           a: 'a'
         });
       }

@@ -1,4 +1,5 @@
 import test from 'tape';
+import _ from 'lodash';
 
 test('compose function', assert => {
   const actual = typeof compose;
@@ -46,7 +47,7 @@ test('compose.staticProperties', nest => {
         }
       });
 
-      const actual = Object.assign({}, {
+      const actual = _.assign({}, {
         a: stamp.a,
         b: stamp.b
       });
