@@ -29,6 +29,5 @@
     return;
   }
 
-  global.compose = compose;
-  require('../build');
+  require('../')(compose);
 }());

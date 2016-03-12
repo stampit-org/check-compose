@@ -1,8 +1,11 @@
 var assert = require('assert');
-assert.ok(typeof global.compose === 'function', 'Global variable "compose" was not found. Aborting tests.');
-
 var requireAll = require('require-all');
-requireAll({
-  dirname: __dirname,
-  filter: /.+-tests\.js$/
-});
+module.exports = function (compose) {
+  assert.ok(typeof compose === 'function', '"compose" must be a function');
+
+  global.compose = compose;
+  requireAll({
+    dirname: __dirname,
+    filter: /.+-tests\.js$/
+  });
+};

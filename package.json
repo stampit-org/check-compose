@@ -2,7 +2,7 @@
   "name": "check-compose",
   "version": "1.0.0-beta",
   "description": "Command line tool to test your 'compose' function implementation",
-  "main": "./index.js",
+  "main": "build/index.js",
   "scripts": {
     "build": "babel -s -d build src",
     "lint": "eslint src/ bin/",
