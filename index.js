@@ -1,3 +1,4 @@
+var assert = require('assert');
 module.exports = function (compose) {
   assert.ok(typeof compose === 'function', '"compose" must be a function');
   var oldCompose = global.compose;

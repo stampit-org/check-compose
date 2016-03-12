@@ -10,7 +10,7 @@
   composeImplementationFile = path.join(process.cwd(), composeImplementationFile);
   var imported;
   try {
-    require('babel-register');
+    require('babel-register')(require('babel-preset-es2015'));
     require('babel-polyfill');
 
     imported = require(composeImplementationFile);
