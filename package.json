@@ -6,11 +6,11 @@
   "scripts": {
     "build": "babel -s -d build src",
     "lint": "eslint src/ bin/",
-    "test": "./bin/check-compose.js stamp-specification",
+    "test": "./bin/check-compose stamp-specification",
     "prepublish": "npm run lint && npm run build && npm run test"
   },
   "bin": {
-    "check-compose": "./bin/check-compose.js"
+    "check-compose": "./bin/check-compose"
   },
   "repository": {
     "type": "git",
