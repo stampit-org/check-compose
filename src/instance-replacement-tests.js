@@ -1,65 +1,69 @@
 import test from 'tape';
 
-[0, 1, null, NaN, 'string', true, false].forEach(obj => {
-  test('initializer returns ' + obj, assert => {
+module.exports = (compose) => {
+
+  [0, 1, null, NaN, 'string', true, false].forEach(obj => {
+    test('initializer returns ' + obj, assert => {
+      compose({
+        initializers: [
+          () => {
+            return obj;
+          },
+          (options, {instance}) => {
+            const actual = typeof instance;
+            const expected = typeof obj;
+
+            assert.equal(actual, expected,
+              'initializer return value should replace instance');
+
+            assert.end();
+          }
+        ]
+      })();
+    });
+  });
+
+
+  test('initializer returns undefined', assert => {
     compose({
       initializers: [
         () => {
-          return obj;
+          return undefined;
         },
-        (options, { instance }) => {
+        (options, {instance}) => {
           const actual = typeof instance;
-          const expected = typeof obj;
+          const expected = 'object';
 
           assert.equal(actual, expected,
-            'initializer return value should replace instance');
+            'initializer return value should not replace instance');
 
           assert.end();
         }
       ]
     })();
   });
-});
 
+  test('instance replacement', assert => {
+    const message = 'instance replaced';
+    const newInstance = {
+      message: message
+    };
 
-test('initializer returns undefined', assert => {
-  compose({
-    initializers: [
-      () => {
-        return undefined;
-      },
-      (options, { instance }) => {
-        const actual = typeof instance;
-        const expected = 'object';
+    const obj = compose({
+      initializers: [
+        () => {
+          return newInstance;
+        }
+      ]
+    })();
 
-        assert.equal(actual, expected,
-          'initializer return value should not replace instance');
+    const actual = obj.message;
+    const expected = message;
 
-        assert.end();
-      }
-    ]
-  })();
-});
+    assert.equal(actual, expected,
+      'the replaced instance value should be returned from the stamp');
 
-test('instance replacement', assert => {
-  const message = 'instance replaced';
-  const newInstance = {
-    message: message
-  };
+    assert.end();
+  });
 
-  const obj = compose({
-    initializers: [
-      () => {
-        return newInstance;
-      }
-    ]
-  })();
-
-  const actual = obj.message;
-  const expected = message;
-
-  assert.equal(actual, expected,
-    'the replaced instance value should be returned from the stamp');
-
-  assert.end();
-});
+};
