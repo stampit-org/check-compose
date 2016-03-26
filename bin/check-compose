@@ -10,12 +10,18 @@
 
   var importedImplementations = composeImplementationFiles.map(function (file) {
     try {
-      file = path.resolve(process.cwd(), file);
       return require(file);
-    } catch (err) {
-      console.error(err + '\nFailed to read JavaScript file ' + file);
-      process.exit(1);
     }
+    catch (_err) {
+      try {
+        file = path.resolve(process.cwd(), file);
+        return require(file);
+      } catch (err) {
+        console.error(err + '\nFailed to read JavaScript file ' + file);
+        process.exit(1);
+      }
+    }
+
   });
 
   importedImplementations.forEach(function (imported, index) {
