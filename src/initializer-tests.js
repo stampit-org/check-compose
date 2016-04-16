@@ -201,6 +201,19 @@ module.exports = (compose) => {
 
       assert.end();
     });
+
+    nest.test('...with accidental rubbish in initializer', assert => {
+      const stamp = compose();
+      stamp.compose.initializers = [() =>{}, 0, 1, null, NaN, 'string', true, false];
+
+      const actual = stamp();
+      const expected = {};
+
+      assert.deepEqual(actual, expected,
+        'should avoid non functions in initializers array');
+
+      assert.end();
+    });
   });
 
 };
