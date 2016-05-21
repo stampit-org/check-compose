@@ -90,6 +90,40 @@ module.exports = (compose) => {
 
       assert.end();
     });
+
+    nest.test('...with identical initializers', assert => {
+      const stamp1 = build(1);
+      const stamp2 = build(2);
+      const stamp3 = build(3);
+      stamp2.compose.initializers = stamp1.compose.initializers.slice();
+      stamp3.compose.initializers = stamp1.compose.initializers.slice();
+      stamp3.compose.initializers.push(stamp3.compose.initializers[0]);
+      const subject = compose(stamp1, stamp2, stamp3);
+      const initializers = subject.compose.initializers;
+
+      const actual = initializers.length;
+      const expected = 1;
+
+      assert.equal(actual, expected,
+        'should not add same initializer more than once');
+
+      assert.end();
+    });
+
+    nest.test('...with identical initializers in a single argument', assert => {
+      const stamp1 = build(1);
+      stamp1.compose.initializers.push(stamp1.compose.initializers[0]);
+      const subject = compose(stamp1);
+      const initializers = subject.compose.initializers;
+
+      const actual = initializers.length;
+      const expected = 1;
+
+      assert.equal(actual, expected,
+        'should not add same initializer more than once');
+
+      assert.end();
+    });
   });
 
   test('stamp()', nest => {
