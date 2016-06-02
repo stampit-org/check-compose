@@ -179,6 +179,22 @@ module.exports = (compose) => {
       assert.end();
     });
 
+    nest.test('...with options defaulting to empty object', assert => {
+      const composable = function () {};
+      composable.compose = function () {};
+      composable.compose.initializers = [
+        function (options) {
+          assert.ok(typeof options === 'object' && options !== null,
+            'should receive options as object');
+
+          assert.end();
+        }
+      ];
+      const testStamp = compose(composable);
+
+      testStamp();
+    });
+
     nest.test('...with args in initializer', assert => {
       const expected = [0, 'string', {obj: {}}, [1, 2, 3]];
 
