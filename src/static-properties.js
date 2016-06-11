@@ -21,7 +21,7 @@ module.exports = (compose) => {
     const actual = _.pick(staticProperties, _.keys(expected));
 
     assert.deepEqual(actual, expected,
-      `should compose staticProperties into descriptor`);
+      'should compose staticProperties into descriptor');
 
     assert.end();
   });
@@ -46,7 +46,7 @@ module.exports = (compose) => {
     const actual = _.pick(staticProperties, _.keys(expected));
 
     assert.deepEqual(actual, expected,
-      `should compose staticProperties into descriptor`);
+      'should compose staticProperties into descriptor');
 
     assert.end();
   });
@@ -69,7 +69,7 @@ module.exports = (compose) => {
     const actual = _.pick(staticDeepProperties, _.keys(expected));
 
     assert.deepEqual(actual, expected,
-      `should compose staticDeepProperties into descriptor`);
+      'should compose staticDeepProperties into descriptor');
 
     assert.end();
   });
@@ -94,7 +94,7 @@ module.exports = (compose) => {
     const actual = _.pick(staticDeepProperties, _.keys(expected));
 
     assert.deepEqual(actual, expected,
-      `should compose staticDeepProperties into descriptor`);
+      'should compose staticDeepProperties into descriptor');
 
     assert.end();
   });
