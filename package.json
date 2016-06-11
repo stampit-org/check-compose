@@ -6,8 +6,8 @@
   "scripts": {
     "build": "babel -s -d build src",
     "lint": "eslint src/ bin/",
-    "test": "./bin/check-compose stamp-specification",
-    "prepublish": "npm run lint && npm run build && npm run test"
+    "test": "npm run lint && npm run build && ./bin/check-compose stamp-specification",
+    "prepublish": "npm run test"
   },
   "bin": {
     "check-compose": "./bin/check-compose"
