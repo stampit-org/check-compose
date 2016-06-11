@@ -43,10 +43,11 @@ module.exports = (compose) => {
   test('compose()', nest => {
 
     nest.test('...with no initializers', assert => {
+      const expected = _.size(compose().compose.initializers);
       const subject = compose({initializers: [0, 'a', null, undefined, {}, NaN, /regexp/]});
-      const initializers = subject.compose.initializers;
+      const actual = _.size(subject.compose.initializers);
 
-      assert.notOk(initializers && initializers.length,
+      assert.equal(actual, expected,
         'should not add any initializers');
 
       assert.end();
@@ -136,14 +137,6 @@ module.exports = (compose) => {
       };
       composable.compose.initializers = [
         function ({stampOption}, {instance, stamp, args}) {
-          const actual = {
-            correctThisValue: this === instance,
-            hasOptions: Boolean(stampOption),
-            hasInstance: Boolean(instance.instanceProps),
-            hasStamp: Boolean(stamp.compose),
-            argsLength: args.length === 3
-          };
-
           const expected = {
             correctThisValue: true,
             hasOptions: true,
@@ -151,6 +144,14 @@ module.exports = (compose) => {
             hasStamp: true,
             argsLength: true
           };
+
+          const actual = _.pick({
+            correctThisValue: this === instance,
+            hasOptions: Boolean(stampOption),
+            hasInstance: Boolean(instance.instanceProps),
+            hasStamp: Boolean(stamp.compose),
+            argsLength: args.length === 3
+          }, _.keys(expected));
 
           assert.deepEqual(actual, expected,
             'should call initializer with correct signature');
@@ -166,12 +167,12 @@ module.exports = (compose) => {
     nest.test('...with overrides in initializer', assert => {
       const stamp = buildInitializers();
 
-      const actual = compose(stamp)();
       const expected = {
         a: 'a',
         b: 'b',
         override: 'c'
       };
+      const actual = _.pick(compose(stamp)(), _.keys(expected));
 
       assert.deepEqual(actual, expected,
         'should apply initializers with last-in priority');
@@ -225,10 +226,10 @@ module.exports = (compose) => {
       ];
       const stamp = compose(composable);
 
-      const actual = compose(stamp)();
       const expected = {
         a: 'a'
       };
+      const actual = _.pick(compose(stamp)(), _.keys(expected));
 
       assert.deepEqual(actual, expected,
         'should use object instance as `this` inside initializers');
@@ -244,7 +245,7 @@ module.exports = (compose) => {
       stamp.compose.initializers = [0, 1, null, NaN, 'string', true, false];
 
       const actual = compose(stamp)();
-      const expected = {};
+      const expected = compose()();
 
       assert.deepEqual(actual, expected,
         'should avoid non functions in initializers array');
@@ -257,7 +258,7 @@ module.exports = (compose) => {
       stamp.compose.initializers = [() =>{}, 0, 1, null, NaN, 'string', true, false];
 
       const actual = stamp();
-      const expected = {};
+      const expected = compose()();
 
       assert.deepEqual(actual, expected,
         'should avoid non functions in initializers array');

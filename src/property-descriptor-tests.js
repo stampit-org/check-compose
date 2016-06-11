@@ -11,10 +11,7 @@ module.exports = (compose) => {
       enumerable: false
     };
     const b = _.assign({}, a);
-    const descriptors = {
-      a,
-      b
-    };
+    const descriptors = {a, b};
     return descriptors;
   };
 
@@ -41,7 +38,7 @@ module.exports = (compose) => {
         const actual = compose({
           propertyDescriptors: propertyValue
         })();
-        const expected = {};
+        const expected = compose()();
 
         assert.deepEqual(actual, expected,
           'should not any properties instances');
@@ -55,10 +52,10 @@ module.exports = (compose) => {
         const stamp = compose({
           staticPropertyDescriptors: propertyValue
         });
-        const actual = _.values(stamp.compose).filter(value => !_.isEmpty(value)).length;
-        const expected = 0;
+        const actual = _.values(stamp.compose).filter(value => !_.isEmpty(value));
+        const expected = _.values(compose().compose);
 
-        assert.equal(actual, expected,
+        assert.deepEqual(actual, expected,
           'should not add any descriptor data');
       });
 
