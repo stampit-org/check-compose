@@ -81,8 +81,8 @@ module.exports = (compose) => {
             deepProperties: {
               a: {b: 2}
             }
-          })();
-        const expected = {a: {b: 2}};
+          })().a;
+        const expected = {b: 2};
 
         assert.deepEqual(actual, expected,
           `${ prop } conflicts should be merged with last-in priority.`);
@@ -113,15 +113,13 @@ module.exports = (compose) => {
         const b = {
           foo: ['a', 'b', 'c']
         };
-        const expected = {
-          foo: ['a', 'b', 'c']
-        };
+        const expected = ['a', 'b', 'c'];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
-        t.notEqual(actual.foo, b.foo, 'array replacing object should be deep merged: c.foo !== b.foo');
+        t.notEqual(actual, b.foo, 'array replacing object should be deep merged: c.foo !== b.foo');
 
         t.end();
       });
@@ -136,17 +134,15 @@ module.exports = (compose) => {
           }
         };
         const expected = {
-          foo: {
-            bar: 'bam'
-          }
+          bar: 'bam'
         };
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
 
-        t.notEqual(actual.foo, b.foo, 'object replacing array should be deep merged: c.foo !== b.foo');
+        t.notEqual(actual, b.foo, 'object replacing array should be deep merged: c.foo !== b.foo');
 
         t.end();
       });
@@ -158,15 +154,13 @@ module.exports = (compose) => {
         const b = {
           foo: ['a', 'b', 'c']
         };
-        const expected = {
-          foo: [1, 2, 3, 'a', 'b', 'c']
-        };
+        const expected = [1, 2, 3, 'a', 'b', 'c'];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
-        t.notEqual(actual.foo, b.foo, 'array should be deep merged from right: c.foo === b.foo');
+        t.notEqual(actual, b.foo, 'array should be deep merged from right: c.foo === b.foo');
 
         t.end();
       });
@@ -178,11 +172,9 @@ module.exports = (compose) => {
         const b = {
           foo: 99
         };
-        const expected = {
-          foo: 99
-        };
+        const expected = 99;
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -197,11 +189,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, 2, 3]
         };
-        const expected = {
-          foo: [1, 2, 3]
-        };
+        const expected = [1, 2, 3];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -216,11 +206,9 @@ module.exports = (compose) => {
         const b = {
           foo: 'abc'
         };
-        const expected = {
-          foo: 'abc'
-        };
+        const expected = 'abc';
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -236,11 +224,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, 2, 3]
         };
-        const expected = {
-          foo: [1, 2, 3]
-        };
+        const expected = [1, 2, 3];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -255,11 +241,9 @@ module.exports = (compose) => {
         const b = {
           foo: true
         };
-        const expected = {
-          foo: true
-        };
+        const expected = true;
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -274,11 +258,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, 2, 3]
         };
-        const expected = {
-          foo: [1, 2, 3]
-        };
+        const expected = [1, 2, 3];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -293,11 +275,9 @@ module.exports = (compose) => {
         const b = {
           foo: false
         };
-        const expected = {
-          foo: false
-        };
+        const expected = false;
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -312,11 +292,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, 2, 3]
         };
-        const expected = {
-          foo: [1, 2, 3]
-        };
+        const expected = [1, 2, 3];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -332,11 +310,9 @@ module.exports = (compose) => {
         const b = {
           foo: null
         };
-        const expected = {
-          foo: null
-        };
+        const expected = null;
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -351,11 +327,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, 2, 3]
         };
-        const expected = {
-          foo: [1, 2, 3]
-        };
+        const expected = [1, 2, 3];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -368,11 +342,9 @@ module.exports = (compose) => {
         const b = {
           foo: [1, _, _.noop]
         };
-        const expected = {
-          foo: [1, _, _.noop]
-        };
+        const expected = [1, _, _.noop];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -387,11 +359,9 @@ module.exports = (compose) => {
         const b = {
           foo: undefined
         };
-        const expected = {
-          foo: [1, _, _.noop]
-        };
+        const expected = [1, _, _.noop];
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);
@@ -406,11 +376,9 @@ module.exports = (compose) => {
         const b = {
           foo: 42
         };
-        const expected = {
-          foo: 42
-        };
+        const expected = 42;
 
-        const actual = deepMerge(a, b);
+        const actual = deepMerge(a, b).foo;
         const expectedMsg = 'result expected  : ' + JSON.stringify(expected);
 
         t.deepEqual(actual, expected, expectedMsg);

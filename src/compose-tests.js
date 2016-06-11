@@ -5,10 +5,10 @@ module.exports = (compose) => {
 
   test('compose ignores non objects', assert => {
     const stamp = compose(0, 'a', null, undefined, {}, NaN, /regexp/);
-    const subject = _.values(stamp.compose).filter(_.negate(_.isEmpty)).length;
-    const expected = 0;
+    const subject = _.values(stamp.compose).filter(_.negate(_.isEmpty));
+    const expected = _.values(compose().compose);
 
-    assert.equal(subject, expected,
+    assert.deepEqual(subject, expected,
       'should not add any descriptor data');
 
     assert.end();

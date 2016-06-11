@@ -1,4 +1,5 @@
 import test from 'tape';
+import _ from 'lodash';
 
 module.exports = (compose) => {
 
@@ -46,11 +47,11 @@ module.exports = (compose) => {
       };
       const stamp = compose(composable);
 
-      const actual = stamp();
       const expected = {
         a: 'a',
         b: 'b'
       };
+      const actual = _.pick(stamp(), _.keys(expected));
 
       assert.deepEqual(actual, expected,
         'should create properties');
@@ -85,11 +86,11 @@ module.exports = (compose) => {
       const stamp2 = compose(build('properties', 'b'));
       const finalStamp = stamp1.compose(stamp2);
 
-      const actual = finalStamp();
       const expected = {
         a: 'a',
         b: 'b'
       };
+      const actual = _.pick(finalStamp(), _.keys(expected));
 
       assert.deepEqual(actual, expected,
         'should use Stamp as base composable');

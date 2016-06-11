@@ -1,8 +1,9 @@
 import test from 'tape';
+import _ from 'lodash';
 
 module.exports = (compose) => {
 
-  test('comopose function pojo (Plain Old JavaScript Object)', nest => {
+  test('compose function pojo (Plain Old JavaScript Object)', nest => {
     const objDescriptors = [
       'properties',
       'deepProperties',
@@ -63,10 +64,9 @@ module.exports = (compose) => {
         initializers: [a]
       }).compose.initializers;
 
-      const expected = [a];
 
-      assert.deepEqual(actual, expected,
-        'should create initializers descriptor');
+      assert.ok(_.includes(actual, a),
+        'should have initializers descriptor');
 
       assert.end();
     });
