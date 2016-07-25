@@ -94,6 +94,61 @@ module.exports = (compose) => {
   });
 
 
+  test('Deep function` merge', nest => {
+    // Loop over each property that is merged and ensure
+    // that merge implemented correctly.
+    mergeProps.forEach(prop => {
+
+      nest.test(`...${ prop } should assign functions source`, (assert) => {
+        function F() {}
+
+        F.x = 1;
+        const actual = compose(
+          {
+            deepProperties: {
+              a: {b: 1}
+            }
+          },
+          {
+            deepProperties: {
+              a: F
+            }
+          })().a;
+        const expected = F;
+
+        assert.strictEqual(actual, expected,
+          `${ prop } function must be assigned`);
+
+        assert.end();
+      });
+
+      nest.test(`...${ prop } should not merge to a function`, (assert) => {
+        function F() {}
+
+        F.x = 1;
+        const actual = compose(
+          {
+            deepProperties: {
+              a: F
+            }
+          },
+          {
+            deepProperties: {
+              a: {b: 1}
+            }
+          })().a;
+        const expected = {b: 1};
+
+        assert.deepEqual(actual, expected,
+          `${ prop } function must be overwritten with plain object`);
+
+        assert.end();
+      });
+
+    });
+  });
+
+
   test('Deep array merge', nest => {
 
     // Loop over each property that is merged and ensure
