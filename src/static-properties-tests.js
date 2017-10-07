@@ -27,12 +27,10 @@ module.exports = (compose) => {
   });
 
   test('compose static properties with stamp', assert => {
-    const expected = compose({
-      staticProperties: {
-        a: 'a',
-        b: 'b'
-      }
-    });
+    const expected = {
+      a: 'a',
+      b: 'b'
+    };
 
     const staticProperties = compose({
       staticProperties: {
@@ -75,12 +73,10 @@ module.exports = (compose) => {
   });
 
   test('compose static deep properties with stamp', assert => {
-    const expected = compose({
-      staticDeepProperties: {
-        a: 'a',
-        b: 'b'
-      }
-    });
+    const expected = {
+      a: 'a',
+      b: 'b'
+    };
 
     const staticDeepProperties = compose({
       staticDeepProperties: {
