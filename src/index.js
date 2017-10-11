@@ -3,6 +3,7 @@ import composeBasicTests from './compose-basic-tests';
 import composeTests from './compose-tests';
 import descriptorTests from './descriptor-tests';
 import initializerTests from './initializer-tests';
+import composerTests from './composer-tests';
 import instanceReplacemenmtTests from './instance-replacement-tests';
 import mergeTests from './merge-tests';
 import priorityTests from './priority-tests';
@@ -20,6 +21,7 @@ module.exports = function (compose) {
   composeTests(compose);
   descriptorTests(compose);
   initializerTests(compose);
+  composerTests(compose);
   instanceReplacemenmtTests(compose);
   mergeTests(compose);
   priorityTests(compose);
