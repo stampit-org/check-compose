@@ -12,6 +12,8 @@ module.exports = (compose) => {
     'deepConfiguration'
   ];
 
+  const symbol = Symbol.for('test');
+
   const build = (num) => {
     const composable = function () {};
     composable.compose = function () {};
@@ -20,6 +22,8 @@ module.exports = (compose) => {
       composable.compose[prop] = {
         [num]: num,
         override: num,
+
+        [symbol]: num,
 
         actualValue: null,
         get getter() {
@@ -47,11 +51,17 @@ module.exports = (compose) => {
       const subject = compose(build(1), build(2));
       const descr = subject.compose;
 
-      const actual = descr[prop][1];
-      const expected = 1;
+      let actual = descr[prop][1];
+      let expected = 1;
 
       assert.equal(actual, expected,
         `${ prop } should be copied by assignment from first argument`);
+
+      actual = descr[prop][symbol];
+      expected = 2;
+
+      assert.equal(actual, expected,
+        `${ prop } should be copied by assignment from first argument via Symbol`);
 
       assert.end();
     });
@@ -60,11 +70,16 @@ module.exports = (compose) => {
       const subject = compose(build(1), build(2));
       const descr = subject.compose;
 
-      const actual = descr[prop][2];
+      let actual = descr[prop][2];
       const expected = 2;
 
       assert.equal(actual, expected,
         `${ prop } should be copied by assignment from 2nd argument`);
+
+      actual = descr[prop][symbol];
+
+      assert.equal(actual, expected,
+        `${ prop } should be copied by assignment from 2nd argument via Symbol`);
 
       assert.end();
     });
@@ -73,11 +88,16 @@ module.exports = (compose) => {
       const subject = compose(build(1), build(2), build(3));
       const descr = subject.compose;
 
-      const actual = descr[prop][3];
+      let actual = descr[prop][3];
       const expected = 3;
 
       assert.equal(actual, expected,
         `${ prop } should be copied by assignment from subsequent arguments`);
+
+      actual = descr[prop][symbol];
+
+      assert.equal(actual, expected,
+        `${ prop } should be copied by assignment from subsequent arguments via Symbol`);
 
       assert.end();
     });
@@ -86,11 +106,16 @@ module.exports = (compose) => {
       const subject = compose(build(1), build(2));
       const descr = subject.compose;
 
-      const actual = descr[prop].override;
+      let actual = descr[prop].override;
       const expected = 2;
 
       assert.equal(actual, expected,
         `${ prop } should be copied by assignment with last-in priority`);
+
+      actual = descr[prop][symbol];
+
+      assert.equal(actual, expected,
+        `${ prop } should be copied by assignment with last-in priority via Symbol`);
 
       assert.end();
     });
