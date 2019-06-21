@@ -1,16 +1,16 @@
-import assignmentTests from './assignment-tests';
-import composeBasicTests from './compose-basic-tests';
-import composeTests from './compose-tests';
-import descriptorTests from './descriptor-tests';
-import initializerTests from './initializer-tests';
-import composerTests from './composer-tests';
-import instanceReplacemenmtTests from './instance-replacement-tests';
-import mergeTests from './merge-tests';
-import priorityTests from './priority-tests';
-import peoprtyDescriptorTests from './property-descriptor-tests';
-import propertySafetyTests from './property-safety-tests';
-import stampTests from './stamp-tests';
-import staticPropertiesTests from './static-properties-tests';
+const assignmentTests = require('./assignment-tests');
+const composeBasicTests = require('./compose-basic-tests');
+const composeTests = require('./compose-tests');
+const descriptorTests = require('./descriptor-tests');
+const initializerTests = require('./initializer-tests');
+const composerTests = require('./composer-tests');
+const instanceReplacemenmtTests = require('./instance-replacement-tests');
+const mergeTests = require('./merge-tests');
+const priorityTests = require('./priority-tests');
+const peoprtyDescriptorTests = require('./property-descriptor-tests');
+const propertySafetyTests = require('./property-safety-tests');
+const stampTests = require('./stamp-tests');
+const staticPropertiesTests = require('./static-properties-tests');
 
 
 module.exports = function (compose) {
