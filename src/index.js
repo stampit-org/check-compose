@@ -5,6 +5,7 @@ const descriptorTests = require('./descriptor-tests');
 const initializerTests = require('./initializer-tests');
 const composerTests = require('./composer-tests');
 const instanceReplacemenmtTests = require('./instance-replacement-tests');
+const getterSetterTests = require('./getters-setters');
 const mergeTests = require('./merge-tests');
 const priorityTests = require('./priority-tests');
 const peoprtyDescriptorTests = require('./property-descriptor-tests');
@@ -23,6 +24,7 @@ module.exports = function (compose) {
   initializerTests(compose);
   composerTests(compose);
   instanceReplacemenmtTests(compose);
+  getterSetterTests(compose);
   mergeTests(compose);
   priorityTests(compose);
   peoprtyDescriptorTests(compose);
