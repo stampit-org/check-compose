@@ -101,4 +101,14 @@ module.exports = (compose) => {
     assert.end();
   });
 
+  test('broken stamp', assert => {
+    const brokenStamp = compose();
+    delete brokenStamp.compose;
+
+    const instance = brokenStamp();
+    assert.ok(instance);
+
+    assert.end();
+  });
+
 };
