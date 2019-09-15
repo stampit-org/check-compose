@@ -1,6 +1,6 @@
 {
   "name": "check-compose",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Command line tool to test your 'compose' function implementation",
   "main": "src/index.js",
   "scripts": {
