@@ -1,3 +1,7 @@
+# WARNING! DEPRECATED
+
+Use `@stamp/check-compose` instead.
+
 # check-compose
 Command line tool to test your ['compose' function implementation](https://github.com/stampit-org/stamp-specification)
 
