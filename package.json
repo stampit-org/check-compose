@@ -6,7 +6,6 @@
   "scripts": {
     "lint": "eslint src/**.js bin/**",
     "test": "npm run lint && ./bin/check-compose stamp-specification",
-    "prepublish": "npm run test",
     "coverage": "nyc ./bin/check-compose stamp-specification"
   },
   "bin": {
