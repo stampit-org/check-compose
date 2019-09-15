@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/**.js bin/**",
-    "test": "npm run lint && npm run build && ./bin/check-compose stamp-specification",
+    "test": "npm run lint && ./bin/check-compose stamp-specification",
     "prepublish": "npm run test",
     "coverage": "nyc ./bin/check-compose stamp-specification"
   },
@@ -33,7 +33,7 @@
   "devDependencies": {
     "eslint": "^6.4.0",
     "nyc": "^14.1.1",
-    "stamp-specification": "^1.5.1"
+    "stamp-specification": "latest"
   },
   "dependencies": {
     "lodash": "^4.17.15",
