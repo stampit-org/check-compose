@@ -1,5 +1,5 @@
-import test from 'tape';
-import _ from 'lodash';
+const test = require('tape');
+const _ = require('lodash');
 
 module.exports = (compose) => {
 
@@ -95,7 +95,7 @@ module.exports = (compose) => {
       const expected = _.assign({}, b);
 
       assert.deepEqual(actual, expected,
-        'should assign staticProperties to stamp');
+        'should assign staticPropertyDescriptors to stamp');
 
       assert.end();
     });

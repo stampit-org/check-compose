@@ -16,12 +16,6 @@ ES5:
 $ check-compose path/to/compose.js
 ```
 
-ES6 using `babel-node`:
-```sh
-$ npm i check-compose
-$ babel-node ./node_modules/.bin/check-compose path/to/compose.js
-```
-
 ### Programmatically
 
 ```js

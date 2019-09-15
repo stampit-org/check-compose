@@ -1,5 +1,5 @@
-import test from 'tape';
-import _ from 'lodash';
+const test = require('tape');
+const _ = require('lodash');
 
 module.exports = (compose) => {
 
@@ -97,6 +97,16 @@ module.exports = (compose) => {
     const expected = true;
 
     assert.equal(actual, expected, 'should be a function');
+
+    assert.end();
+  });
+
+  test('broken stamp', assert => {
+    const brokenStamp = compose();
+    delete brokenStamp.compose;
+
+    const instance = brokenStamp();
+    assert.ok(instance);
 
     assert.end();
   });

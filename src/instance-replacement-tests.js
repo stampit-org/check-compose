@@ -1,4 +1,4 @@
-import test from 'tape';
+const test = require('tape');
 
 module.exports = (compose) => {
 
