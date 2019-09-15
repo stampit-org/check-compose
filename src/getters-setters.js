@@ -46,30 +46,30 @@ module.exports = (compose) => {
       const info = Object.getOwnPropertyDescriptor(instance, "info");
       assert.equal(typeof info.get, "function", "should have getter on object instance");
       assert.equal(typeof info.set, "function", "should have setter on object instance");
-      assert.equal(instance.info, "2", "getter should be the last");
+      assert.equal(instance.info, "2", "getter should be overtwitten");
       instance.info = "3";
-      assert.equal(instance._info, "33", "setter should be the last");
+      assert.equal(instance._info, "33", "setter should be overtwitten");
 
       const info2 = Object.getOwnPropertyDescriptor(instance.__proto__, "info");
       assert.equal(typeof info2.get, "function", "should have getter on object prototype");
       assert.equal(typeof info2.set, "function", "should have setter on object prototype");
-      assert.equal(instance.__proto__.info, "2", "getter should be the last");
+      assert.equal(instance.__proto__.info, "2", "getter should be overtwitten");
       instance.__proto__.info = "3";
-      assert.equal(instance.__proto__._info, "33", "setter should be the last");
+      assert.equal(instance.__proto__._info, "33", "setter should be overtwitten");
 
       const info3 = Object.getOwnPropertyDescriptor(stamp, "info");
       assert.equal(typeof info3.get, "function", "should have getter on object prototype");
       assert.equal(typeof info3.set, "function", "should have setter on object prototype");
-      assert.equal(stamp.info, "2", "getter should be the last");
+      assert.equal(stamp.info, "2", "getter should be overtwitten");
       stamp.info = "3";
-      assert.equal(stamp._info, "33", "setter should be the last");
+      assert.equal(stamp._info, "33", "setter should be overtwitten");
 
       const info4 = Object.getOwnPropertyDescriptor(stamp.compose.configuration, "info");
       assert.equal(typeof info4.get, "function", "should have getter on object prototype");
       assert.equal(typeof info4.set, "function", "should have setter on object prototype");
-      assert.equal(stamp.compose.configuration.info, "2", "getter should be the last");
+      assert.equal(stamp.compose.configuration.info, "2", "getter should be overtwitten");
       stamp.compose.configuration.info = "3";
-      assert.equal(stamp.compose.configuration._info, "33", "setter should be the last");
+      assert.equal(stamp.compose.configuration._info, "33", "setter should be overtwitten");
 
       assert.end();
     });
