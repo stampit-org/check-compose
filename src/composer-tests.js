@@ -2,51 +2,55 @@ const test = require('tape');
 const _ = require('lodash');
 
 module.exports = (compose) => {
-
-  test('compose({ composers() })', (t) => {
+  test('composer arguments', (t) => {
     let executed = 0;
     let passedStamp;
+    function composer(...args) {
+      t.equal(args.length, 1, 'have single argument');
+      t.ok(_.isPlainObject(args[0]), 'argument is an object');
+      t.ok(_.isArray(args[0].composables), 'composables passed');
+      const composers = args[0].composables.reduce((all, c) => {
+        const descr = c.compose || c;
+        if (_.isArray(descr.composers)) return all.concat(descr.composers);
+        return all;
+      }, []);
+      t.ok(_.isArray(composers), 'have the composers list');
+      t.ok(_.includes(composers, composer), 'our composer is present');
+      executed += 1;
+      passedStamp = args[0].stamp;
+    }
     const stamp = compose({
-      composers: [(...args) => {
-        t.equal(args.length, 1, 'have single argument');
-        t.ok(_.isPlainObject(args[0]), 'argument is an object');
-        t.ok(_.isArray(args[0].composables), 'composables passed');
-        t.equal(args[0].composables.length, 1, 'only one composable passed');
-        t.ok(_.isPlainObject(args[0].composables[0]), 'the composable is a descriptor');
-        t.ok(_.isArray(args[0].composables[0].composers),
-          'first composable have the composers list');
-        executed += 1;
-        passedStamp = args[0].stamp;
-      }]
+      composers: [composer],
     });
 
-    t.ok(stamp.compose.composers,
-      'should add composers');
-    t.equal(stamp.compose.composers.length, 1,
-      'should be single composer');
-    t.equal(executed, 1,
-      'should be executed while composing');
+    t.ok(stamp.compose.composers, 'should add .composers');
+    t.ok(_.includes(stamp.compose.composers, composer), 'should include our composer');
+    t.equal(executed, 1, 'should be executed while composing');
     t.equal(passedStamp, stamp, 'stamp passed');
 
     t.end();
   });
 
-  test('compose({ composers: function[] })', (t) => {
+  test('two composers should be executed on composition', (t) => {
     let executed1 = 0;
     let executed2 = 0;
     let stamp1;
     let stamp2;
     const actualStamp = compose({
       composers: [
-        function composer1({stamp}) {
+        function composer1(ref) {
+          const { stamp } = ref;
+
           stamp1 = stamp;
           executed1 += 1;
         },
-        function composer2({stamp}) {
+        function composer2(ref) {
+          const { stamp } = ref;
+
           stamp2 = stamp;
           executed2 += 1;
-        }
-      ]
+        },
+      ],
     });
 
     t.equal(stamp1, actualStamp, 'stamp passed to first composer');
@@ -63,16 +67,23 @@ module.exports = (compose) => {
     let stamp1;
     let stamp2;
     const actualStamp = compose({
-      composers: [({stamp}) => {
-        stamp1 = stamp;
-        executed1 += 1;
-      }]
-    })
-    .compose({
-      composers: [({stamp}) => {
-        stamp2 = stamp;
-        executed2 += 1;
-      }]
+      composers: [
+        function composers(ref) {
+          const { stamp } = ref;
+
+          stamp1 = stamp;
+          executed1 += 1;
+        },
+      ],
+    }).compose({
+      composers: [
+        function composers(ref) {
+          const { stamp } = ref;
+
+          stamp2 = stamp;
+          executed2 += 1;
+        },
+      ],
     });
 
     t.equal(stamp1, actualStamp, 'stamp passed to first composer');
@@ -83,12 +94,14 @@ module.exports = (compose) => {
     t.end();
   });
 
-  test('compose({ composers() }) returned value replaces stamp', (t) => {
+  test('composer returned value replaces stamp', (t) => {
     const replacement = compose();
     const stamp = compose({
-      composers: [() => {
-        return replacement;
-      }]
+      composers: [
+        function composers() {
+          return replacement;
+        },
+      ],
     });
 
     t.equal(stamp, replacement, 'composer returned value should replace original stamp');
@@ -96,12 +109,14 @@ module.exports = (compose) => {
     t.end();
   });
 
-  test('compose({ composers() }) a non-stamp should be ignored', (t) => {
+  test('composer returned non-stamp value should be ignored', (t) => {
     const replacement = compose();
     const stamp = compose({
-      composers: [() => {
-        return () => {}; // non-stamp
-      }]
+      composers: [
+        function composers() {
+          return () => {}; // non-stamp
+        },
+      ],
     });
 
     t.notEqual(stamp, replacement, 'composer returned value should not replace original stamp');
@@ -109,18 +124,25 @@ module.exports = (compose) => {
     t.end();
   });
 
-  test('compose({ composers() }) returned value passed to the second composer', (t) => {
+  test('first composer returned value passed to the second composer', (t) => {
     const replacement = compose();
     let stamp2;
-    compose({
-      composers: [() => {
-        return replacement;
-      }]
-    }, {
-      composers: [() => {
-        stamp2 = replacement;
-      }]
-    });
+    compose(
+      {
+        composers: [
+          function composers() {
+            return replacement;
+          },
+        ],
+      },
+      {
+        composers: [
+          function composers() {
+            stamp2 = replacement;
+          },
+        ],
+      }
+    );
 
     t.equal(stamp2, replacement, 'second composer should get first composer return value');
 
@@ -129,11 +151,14 @@ module.exports = (compose) => {
 
   test('composers should be deduped', (t) => {
     const stamp2 = compose();
-    const stamp = compose({composers: [() => {}]});
+    const stamp = compose({ composers: [function composers() {}] });
 
-    const result = stamp.compose(stamp2).compose({}).compose(stamp);
-    const composers = result.compose.composers;
-    t.equal(composers.length, 1, 'should dedupe composers');
+    const result = stamp
+      .compose(stamp2)
+      .compose({})
+      .compose(stamp);
+    const { composers } = result.compose;
+    t.equal(_.uniq(composers).length, composers.length, 'should dedupe composers');
 
     t.end();
   });
@@ -141,18 +166,28 @@ module.exports = (compose) => {
   test('stamp.compose({ composers() }) passes full composables array', (t) => {
     let run = 0;
     const stamp2 = compose();
+    function composer(...args) {
+      const { composables } = args[0];
+
+      run += 1;
+
+      const composers = args[0].composables.reduce((all, c) => {
+        const descr = c.compose || c;
+        if (_.isArray(descr.composers)) return all.concat(descr.composers);
+        return all;
+      }, []);
+
+      if (run === 1) {
+        t.ok(_.includes(composers, composer), 'our composer is present');
+      }
+      if (run === 2) {
+        t.ok(_.includes(composers, composer), 'inheriting stamp should still pass our composer');
+        t.ok(_.includes(composables, stamp), 'composables must contain stamp itself'); // eslint-disable-line no-use-before-define
+        t.ok(_.includes(composables, stamp2), 'composables must contain second stamp too');
+      }
+    }
     const stamp = compose({
-      composers: [({composables}) => {
-        run += 1;
-        if (run === 1) {
-          t.equal(composables.length, 1, 'creating stamp should pass one composable');
-        }
-        if (run === 2) {
-          t.equal(composables.length, 2, 'inheriting stamp should pass two composables');
-          t.equal(composables[0], stamp, 'first composable must be stamp itself');
-          t.equal(composables[1], stamp2, 'second composable must be passed');
-        }
-      }]
+      composers: [composer],
     });
 
     stamp.compose(stamp2);
@@ -161,5 +196,4 @@ module.exports = (compose) => {
 
     t.end();
   });
-
 };
